@@ -2,8 +2,10 @@ package com.pong;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.TimeUnit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.lang.Math;
 
 public class PongGame extends JPanel implements MouseMotionListener {
     static int width = 640; // this is the amount of pixels to the right side of the screen
@@ -14,9 +16,10 @@ public class PongGame extends JPanel implements MouseMotionListener {
     private int aiScore;
     private Ball ball;
     // step 1 add any other private variables you may need to play the game.
+    private Paddle playerPaddle;
+    private 
 
     public PongGame() {
-
         aiPaddle = new Paddle(610, 240, 50, 9, Color.WHITE);
         JLabel pScore = new JLabel("0");
         JLabel aiScore = new JLabel("0");
@@ -29,6 +32,7 @@ public class PongGame extends JPanel implements MouseMotionListener {
         ball = new Ball(200, 200, 10, 3, Color.RED, 10);
 
         //create any other objects necessary to play the game.
+        playerPaddle = new Paddle(0, 240, 50, 9, Color.GREEN);
 
     }
 
@@ -50,12 +54,13 @@ public class PongGame extends JPanel implements MouseMotionListener {
 
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);
-
+        g.setColor(Color.CYAN);
+        g.fillRect(100, 100, 10, 70);
         g.setColor(Color.WHITE);
         g.drawString("The Score is User:" + playerScore + " vs Ai:" + aiScore, 240, 20);
         ball.draw(g);
         aiPaddle.draw(g);
-        
+        playerPaddle.draw(g);
         //call the "draw" function of any visual component you'd like to show up on the screen.
 
     }
@@ -65,14 +70,49 @@ public class PongGame extends JPanel implements MouseMotionListener {
     // postcondition: one frame of the game is "played"
     public void gameLogic() {
         //add commands here to make the game play propperly
+        int aifuckup = (int)(Math.random() * 10);
+        if(aifuckup <= 4 ){
+            
+        }
+        else{
+            aiPaddle.moveY(ball.getY());
+        }
         
-        aiPaddle.moveY(ball.getY());
-
-        if (aiPaddle.isTouching(ball)) {
+        
+        if (aiPaddle.isTouching(ball) || playerPaddle.isTouching(ball)) {
            ball.reverseX();
         }
- 
-        pointScored();
+        boolean round = true;
+        ball.moveBall();
+        ball.bounceOffwalls(464, 16);
+        if(ball.getX() < 0){
+            pointScored("ai");
+            ball.reverseX();
+            ball.reverseY();
+            long timeNow = System.currentTimeMillis();
+            while(timeNow - System.currentTimeMillis() > -1000){
+                System.out.println("waiting");
+            }
+
+            
+            ball.setX(250);
+            ball.setY(200);
+            
+        }
+        else if(ball.getX() > 640){
+            pointScored("ai");
+            ball.reverseX();
+            ball.reverseY();
+            long timeNow = System.currentTimeMillis();
+            while(timeNow - System.currentTimeMillis() > -1000){
+                System.out.println("waiting");
+            }
+
+            
+            ball.setX(250);
+            ball.setY(200);
+            
+        }
 
     }
 
@@ -82,7 +122,14 @@ public class PongGame extends JPanel implements MouseMotionListener {
     // the player scores if the ball moves off the right edge of the screen (640
     // pixels) and the ai scores
     // if the ball goes off the left edge (0)
-    public void pointScored() {
+    public void pointScored(String user) 
+    {
+        if(user.equals("player")){
+            playerScore++;
+        }
+        else{
+            aiScore++;
+        }
 
     }
 
@@ -91,13 +138,15 @@ public class PongGame extends JPanel implements MouseMotionListener {
     @Override
     public void mouseDragged(MouseEvent e) {
         // TODO Auto-generated method stub
-
+        userMouseY = e.getY();
+        playerPaddle.moveY(userMouseY);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         // TODO Auto-generated method stub
         userMouseY = e.getY();
+        playerPaddle.moveY(userMouseY);
     }
 
 }

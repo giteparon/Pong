@@ -78,7 +78,7 @@ public Ball(int x, int y, int changeX, int changeY, Color color, int size) {
   
   //precondition: y is a non-null number
   //postcondition: sets the y value of the ball equal to the inputed y
-  public void sety(int y) {
+  public void setY(int y) {
 	  this.y=y;
   }
   
