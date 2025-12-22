@@ -52,10 +52,10 @@ public Ball(int x, int y, double changeX, double changeY, Color color, int size)
    //precondition: top and bottom are non-null ints
    //postcondition: checks if the ball has gone outside of the top or the bottom of the screen
    public void bounceOffwalls(int top, int bottom){
-    if(y>top) {
+    if(y>=top) {
         reverseY();  
       }
-      if(y<bottom) {
+      if(y<=bottom) {
         reverseY();  
       }
       
@@ -109,7 +109,7 @@ public void setChangeX(double x) {
 //precondition: y is a non-null number, and when increasing or decreasing the changey don't change by a whole number. Use smaller decimals 
 //postcondition: sets the changeY of the ball equal to the inputed y
 public void setChangeY(double y) {
-	this.changeY=x;
+	this.changeY= y;
 }
   
 
