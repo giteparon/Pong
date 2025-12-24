@@ -18,6 +18,7 @@ public class PongGame extends JPanel implements MouseMotionListener {
     // step 1 add any other private variables you may need to play the game.
     private Paddle playerPaddle;
     private Speedup speedup;
+    private Wall wall;
     private SlowDown slowdown;
     private double ballChangeX = 5;
     private double ballChangeY = 3;
@@ -35,6 +36,7 @@ public class PongGame extends JPanel implements MouseMotionListener {
         ball = new Ball(200, 200, ballChangeX, ballChangeY, Color.RED, 10);
         speedup = new Speedup(300, 100, 70, 10);
         slowdown = new SlowDown(300, 300 , 70, 10);
+        wall = new Wall(300, 200 , 35, 10, Color.MAGENTA);
         //create any other objects necessary to play the game.
         playerPaddle = new Paddle(0, 240, 50, 9, Color.GREEN);
 
@@ -64,6 +66,7 @@ public class PongGame extends JPanel implements MouseMotionListener {
         g.drawString("The Score is User:" + playerScore + " vs Ai:" + aiScore, 240, 20);
         speedup.draw(g);
         slowdown.draw(g);
+        wall.draw(g);
         ball.draw(g);
         aiPaddle.draw(g);
         playerPaddle.draw(g);
@@ -84,7 +87,7 @@ public class PongGame extends JPanel implements MouseMotionListener {
         // else{
         aiPaddle.moveY(ball.getY());
         ball.moveBall();
-        ball.bounceOffwalls(464, 16);
+        ball.bounceOffwalls(480, 20);
         //}
         
         if (aiPaddle.isTouching(ball) || playerPaddle.isTouching(ball)) {
@@ -119,7 +122,7 @@ public class PongGame extends JPanel implements MouseMotionListener {
         }
         if(speedup.isTouching(ball)){
             System.out.println("speeding up");
-            if(Math.abs(ball.getChangeX()) < 4.5){
+            if(Math.abs(ball.getChangeX()) < 7.5){
                 ball.setChangeX(ball.getChangeX() * 1.5);
                 ball.setChangeY(ball.getChangeY() * 1.5);
             }
@@ -128,12 +131,16 @@ public class PongGame extends JPanel implements MouseMotionListener {
         }
         if(slowdown.isTouching(ball)){
             System.out.println(ball.getChangeX());
-            if(Math.abs(ball.getChangeX()) > 2){
-                ball.setChangeX(ball.getChangeX() * 0.75);
-                ball.setChangeY(ball.getChangeY() * 0.75);
+            if(Math.abs(ball.getChangeX()) > 2.5){
+                ball.setChangeX(ball.getChangeX() * 0.5);
+                ball.setChangeY(ball.getChangeY() * 0.5);
             }
             
 
+        }
+        if(wall.isTouching(ball)){
+            ball.reverseX();
+            ball.reverseY();
         }
     
 

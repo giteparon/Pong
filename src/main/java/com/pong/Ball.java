@@ -40,7 +40,7 @@ public Ball(int x, int y, double changeX, double changeY, Color color, int size)
  //postcondition: changes the y direction of the ball
    public void reverseY(){
     changeY*=-1;
-    System.out.println("c");
+    
    }
    
    //precondition: none
@@ -53,7 +53,8 @@ public Ball(int x, int y, double changeX, double changeY, Color color, int size)
    //postcondition: checks if the ball has gone outside of the top or the bottom of the screen
    public void bounceOffwalls(int top, int bottom){
     if(y>=top) {
-        reverseY();  
+        reverseY();
+        
       }
       if(y<=bottom) {
         reverseY();  
